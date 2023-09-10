@@ -1,0 +1,175 @@
+{
+	"info": {
+		"_postman_id": "f4677a66-55dc-4a10-8ecd-ea3e81e410a0",
+		"name": "Codedo test task",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10895673",
+		"_collection_link": "https://dark-space-8818-1.postman.co/workspace/MYO~13ac30e7-a4da-4d4a-894b-a3b9adb7115d/collection/10895673-f4677a66-55dc-4a10-8ecd-ea3e81e410a0?action=share&creator=10895673&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "Sync",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "id",
+							"value": "{{$guid}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1/api/sync",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"path": [
+						"api",
+						"sync"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Async",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "id",
+							"value": "{{$guid}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1/api/sync",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"path": [
+						"api",
+						"sync"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get status",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "id",
+							"value": "{{$guid}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1/api/status/345ge",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"path": [
+						"api",
+						"status",
+						"345ge"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Clear",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "id",
+							"value": "{{$guid}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1/api/clear",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"path": [
+						"api",
+						"clear"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Terminate",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "id",
+							"value": "{{$guid}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1/api/terminate",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"path": [
+						"api",
+						"terminate"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

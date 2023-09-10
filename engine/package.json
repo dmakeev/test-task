@@ -1,0 +1,32 @@
+{
+    "name": "processing-engine",
+    "version": "0.0.1",
+    "description": "Processing engine for the test task",
+    "main": "dist/server.js",
+    "type": "module",
+    "scripts": {
+        "build": "tsc",
+        "start": "npm run build && node dist/server.js",
+        "watch": "nodemon --quit -e ts -w ./src -x npm run watch:serve",
+        "watch:serve": "node --enable-source-maps --trace-warnings --no-warnings=ExperimentalWarning --experimental-modules --es-module-specifier-resolution=node --loader ts-node/esm --import=./error.js ./src/server.ts"
+    },
+    "author": "Daniil Makeev / daniil-makeev@yandex.ru",
+    "license": "ISC",
+    "engines": {
+        "node": ">=v20.5.1",
+        "npm": ">=9.8.0"
+    },
+    "dependencies": {
+        "amqplib": "^0.10.3",
+        "class-transformer": "^0.5.1",
+        "class-validator": "^0.14.0",
+        "winston": "^3.10.0"
+    },
+    "devDependencies": {
+        "@types/amqplib": "^0.10.1",
+        "@types/express": "^4.17.17",
+        "nodemon": "^3.0.1",
+        "ts-node": "^10.9.1",
+        "typescript": "^5.2.2"
+    }
+}

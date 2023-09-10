@@ -1,0 +1,79 @@
+version: '2.1'
+services:
+
+  #
+  # nginx
+  #    
+  nginx:
+    container_name: nginx
+    image: 'nginx:1.25.2-alpine'
+    hostname: nginx
+    volumes:
+      - ./build/etc/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./build/logs/nginx:/var/log/nginx
+      - ./build/html:/user/share/nginx/html
+    ports:
+      - 80:80
+    restart: always
+    links:
+      - api-interface
+
+  rabbitmq:
+    image: rabbitmq:3.10.7-management
+    container_name: rabbitmq
+    restart: always    
+    volumes:
+      - ./build/logs/rabbitmq:/var/log/rabbitmq
+      - ./build/rabbitmq:/var/lib/rabbitmq
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    environment:
+      - RABBITMQ_LOGS=/var/log/rabbitmq/rabbitmq.log
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 10s
+      timeout: 10s
+      retries: 3      
+
+  api-interface:
+    build:
+      context: ./api-interface
+      dockerfile: Dockerfile
+    volumes:
+      - ./build/logs/api-interface:/home/node/app/logs
+      - ./api-interface/src:/home/node/app/src
+      - ./api-interface/package.json:/home/node/app/package.json
+      - ./api-interface/tsconfig.json:/home/node/app/tsconfig.json
+      - ./api-interface/error.js:/home/node/app/error.js
+    container_name: api-interface
+    environment:
+      - RABBITMQ_HOST=rabbitmq 
+      - HTTP_PORT=8890
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    ports:
+      - "8890:8890"
+    command: npm run start
+
+  engine:
+    build:
+      context: ./engine
+      dockerfile: Dockerfile
+    volumes:
+      - ./build/logs/engine:/home/node/app/logs
+      - ./engine/src:/home/node/app/src
+      - ./engine/package.json:/home/node/app/package.json
+      - ./engine/tsconfig.json:/home/node/app/tsconfig.json
+      - ./engine/error.js:/home/node/app/error.js
+    container_name: engine
+    environment:
+      - RABBITMQ_HOST=rabbitmq 
+      - HTTP_PORT=8880
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    ports:
+      - "8880:8880"
+    command: npm run start

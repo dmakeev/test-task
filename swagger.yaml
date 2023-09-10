@@ -1,0 +1,149 @@
+openapi: 3.0.0
+servers: []
+info:
+  description: This is a test task API
+  version: "1.0.0"
+  title: Some title
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+paths:
+  /status/{id}:
+    get:
+      summary: execution status
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Actual processing state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessingState'
+        '400':
+          description: Provide an ID of the process, please
+
+  /sync:
+    post:
+      summary: Sync request
+      description: Execute sync request
+      responses:
+        '202':
+          description: 'Waiting for the execution'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessingResult'
+        '400':
+          description: 'Invalid input'
+        '500':
+          description: 'Process was terminated'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProcessingInput'
+
+  /async:
+    post:
+      summary: Async request
+      description: Execute async request without waiting the result
+      responses:
+        '201':
+          description: 'Request has been sent'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncExecutionResponse'
+        '400':
+          description: 'Invalid input'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProcessingInput'
+
+  /clear:
+    delete:
+      summary: Clear all finished requests
+      description: Remove all previously finished requests - both successful and failed
+      responses:
+        '201':
+          description: 'Request has been sent'
+
+  /terminate:
+    delete:
+      summary: Stop and remove all running processes
+      description: Terminate all running processes and clear its data
+      responses:
+        '201':
+          description: 'Request has been sent'
+
+components:
+  schemas:
+    ProcessingInput:
+      type: object
+      required:
+        - id
+        - name
+        - surname
+        - age
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        name:
+          type: string
+          example: John
+        surname:
+          type: string
+          example: Doe
+        age:
+          type: integer
+          example: 30
+    ProcessingResult:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        ageOfFirstDrivingIncident:
+          type: integer
+          example: 20
+        error:
+          type: string
+          example: 'Task not found'
+    ProcessingState:
+      required:
+        - id
+        - status
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        status:
+          type: string
+          enum: ['new', 'processing','done','error']
+        result:
+          $ref: '#/components/schemas/ProcessingResult'
+        reason:
+          type: string
+      type: object
+    AsyncExecutionResponse:
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+      type: object
