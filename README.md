@@ -3,6 +3,7 @@
 ## Running
 Development mode
 `docker-compose -f docker-compose.dev.yaml up`
+
 Production mode
 `docker-compose -f docker-compose.yaml up`
 
